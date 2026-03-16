@@ -135,10 +135,15 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ onBack }) => {
                                         </p>
                                     </div>
                                 ) : (
-                                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex gap-3 mb-2">
-                                        <AlertCircle className="text-blue-600 flex-shrink-0" size={20} />
-                                        <p className="text-xs text-blue-800 leading-relaxed">
-                                            Estos cambios reiniciarán la aplicación automáticamente para aplicar la nueva configuración de conexión.
+                                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex flex-col gap-3 mb-2">
+                                        <div className="flex gap-3">
+                                            <AlertCircle className="text-blue-600 flex-shrink-0" size={20} />
+                                            <p className="text-xs text-blue-800 leading-relaxed">
+                                                Puedes configurar estas credenciales manualmente aquí, o mejor aún, definirlas como <strong>Variables de Entorno</strong> (VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY) en el menú de ajustes de la plataforma para una conexión permanente.
+                                            </p>
+                                        </div>
+                                        <p className="text-[10px] text-blue-600 italic">
+                                            * Los cambios manuales aquí se guardan solo en este navegador.
                                         </p>
                                     </div>
                                 )}

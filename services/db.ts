@@ -219,8 +219,22 @@ export const db = {
           const client = getSupabase();
           if (!client) return { ok: false, error: "Cliente no inicializado" };
           try {
-              const { error } = await client.from('settings').select('key').limit(1);
-              if (error) return { ok: false, error: error.message };
+              // Intentamos una consulta simple. Si falla por falta de tabla, 
+              // pero no por falta de conexión/auth, consideramos que está OK.
+              const { error } = await client.from('app_users').select('id').limit(1);
+              
+              if (error) {
+                  // Si el error es que la tabla no existe, la conexión es válida pero la DB está vacía
+                  if (error.message.includes('relation') && error.message.includes('does not exist')) {
+                      return { ok: true };
+                  }
+                  // Errores de API Key o URL
+                  if (error.message.includes('JWT') || error.message.includes('API key') || error.message.includes('fetch')) {
+                      return { ok: false, error: error.message };
+                  }
+                  // Otros errores
+                  return { ok: false, error: error.message };
+              }
               return { ok: true };
           } catch (e: any) {
               return { ok: false, error: e.message };
